@@ -55,7 +55,7 @@ export default function FolderLayout({ children }) {
           <Link href="/servicios" className="absolute top-[65%] left-[35.2%] -translate-x-1/2 -translate-y-1/2 font-bold text-[4vw] sm:text-[2vw] lg:text-[1.5vw] text-[#0B1B30] hover:-translate-y-1 transition-transform">
             Servicios
           </Link>
-          <Link href="/contacto" className={`absolute top-[72%] left-[84.9%] -translate-x-1/2 -translate-y-1/2 font-bold text-[4vw] sm:text-[2vw] lg:text-[1.5vw] hover:-translate-y-1 transition-transform ${activeTab === 'contacto' ? 'text-[#0B1B30]' : 'text-white'}`}>
+          <Link href="/contacto" className={`absolute top-[72%] left-[84.9%] -translate-x-1/2 -translate-y-1/2 font-bold text-[4vw] sm:text-[2vw] lg:text-[1.5vw] hover:-translate-y-1 transition-transform ${activeTab === 'contacto' ? 'text-[#0B1B30]' : 'text-[#0B1B30]'}`}>
             Contáctanos
           </Link>
         </div>
