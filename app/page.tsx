@@ -1,69 +1,80 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useEffect, useRef } from "react";
+import lottie from "lottie-web";
+
+import animGiro from "@/assets/animaciones/Camb_Giro creativo_Idel.json";
+import animLineas from "@/assets/animaciones/Camb_Lineas_Idel.json";
+import animSeraphim from "@/assets/animaciones/Camb_Seraphim_Idel.json";
+import animPcIdle from "@/assets/animaciones/Camb_Pc Home_Idel.json";
+
+export default function InicioPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    // justify-start y pl-12 alinean todo el bloque al margen izquierdo
+    <div className="relative w-full h-full flex flex-col justify-start items-start pl-12 md:pl-24 pt-20 md:pt-32">
+
+      <div className="relative z-10 flex flex-col font-serif text-[#0B1B30] text-[40px] md:text-[55px] lg:text-[75px] leading-[1.05] tracking-tight w-fit">
+
+        <p className="whitespace-nowrap">Cualquiera crea una web genérica con IA...</p>
+
+        <div className="flex items-center mt-2">
+          <p className="whitespace-nowrap">Nosotros le damos</p>
+          <div className="w-[280px] md:w-[400px] lg:w-[480px] h-[60px] md:h-[85px] lg:h-[100px] ml-4 -mt-2">
+            <LottieNativo animacionData={animGiro} />
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="relative inline-flex items-center w-fit mt-2">
+          <p className="whitespace-nowrap">que reflejara</p>
+          <div className="absolute -right-[40px] md:-right-[60px] -top-2 md:-top-4 w-[50px] md:w-[75px] h-[70px] md:h-[100px]">
+            <LottieNativo animacionData={animLineas} />
+          </div>
         </div>
-      </main>
+
+        <div className="flex items-center mt-2">
+          <p className="whitespace-nowrap">la calidad de</p>
+          <span className="bg-[#36DB75] px-4 pt-1 pb-2 ml-4 flex items-center justify-center whitespace-nowrap leading-none">
+            tu negocio.
+          </span>
+        </div>
+
+      </div>
+
+      <div className="absolute bottom-10 left-10 md:left-24 w-[180px] md:w-[280px] h-[100px] md:h-[130px] pointer-events-none z-20">
+        <LottieNativo animacionData={animSeraphim} />
+      </div>
+
+      {/* Aquí el TV se activa solo, pero START depende del archivo JSON */}
+      <div className="absolute bottom-4 right-10 md:right-24 w-[220px] md:w-[400px] h-[200px] md:h-[370px] pointer-events-none z-20">
+        <LottieNativo animacionData={animPcIdle} hoverActivo={false} />
+      </div>
+
     </div>
+  );
+}
+
+function LottieNativo({ animacionData, hoverActivo = false }: { animacionData: any, hoverActivo?: boolean }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const animRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    animRef.current = lottie.loadAnimation({
+      container: containerRef.current,
+      renderer: "svg",
+      loop: true,
+      autoplay: !hoverActivo, 
+      animationData: animacionData,
+    });
+    return () => animRef.current?.destroy();
+  }, [animacionData, hoverActivo]);
+
+  return (
+    <div 
+      ref={containerRef}
+      className={`w-full h-full flex items-center justify-center ${hoverActivo ? "cursor-pointer pointer-events-auto" : "pointer-events-none"}`}
+      onMouseEnter={() => hoverActivo && animRef.current?.play()}
+      onMouseLeave={() => hoverActivo && animRef.current?.stop()}
+    />
   );
 }
