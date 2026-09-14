@@ -1,16 +1,38 @@
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+
 }
 
-model Contacto {
+// 1. Tabla de Clientes (Datos personales)
+model Cliente {
   id        Int      @id @default(autoincrement())
   nombre    String
-  email     String
-  mensaje   String
+  email     String   @unique // El correo debe ser único
   createdAt DateTime @default(now())
+  
+  // Relación: Un cliente puede tener MUCHAS citas
+  citas     Cita[]
+}
+
+// 2. Tabla de Citas (Detalles de la reunión)
+model Cita {
+  id        Int      @id @default(autoincrement())
+  mensaje   String   @db.Text
+  fecha     String   // Guardaremos formato estricto: "2026-10-28"
+  hora      String   // Guardaremos formato estricto: "14:00"
+  
+  // Llave foránea (Foreign Key)
+  clienteId Int
+  cliente   Cliente  @relation(fields: [clienteId], references: [id])
+  
+  createdAt DateTime @default(now())
+
+  // LA MAGIA DE LA INTEGRIDAD: 
+  // Esta restricción le dice a PostgreSQL: "NUNCA permitas que exista 
+  // un registro con la misma fecha Y la misma hora en toda la tabla"
+  @@unique([fecha, hora]) 
 }
