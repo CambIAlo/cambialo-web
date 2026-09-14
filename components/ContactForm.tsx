@@ -51,16 +51,17 @@ export default function ContactForm({ onVolver, onSiguiente }: ContactFormProps)
               <label className="text-[#0B1B30] font-bold md:w-40">Nombre y apellido</label>
             </div>
             <input 
-              type="text" 
-              value={nombre}
-              onChange={(e) => {
-                setNombre(e.target.value);
-                if (error) setError(""); // Oculta el error al empezar a escribir
-              }}
-              className="flex-1 w-full bg-transparent border border-[#0B1B30] rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-[#0B1B30] text-[#0B1B30] font-semibold" 
-            />
-          </div>
-
+  type="text" 
+  value={nombre}
+  onChange={(e) => {
+    // Expresión regular que solo permite letras (incluyendo acentos y eñes) y espacios
+    const soloLetras = e.target.value.replace(/[0-9]/g, "");
+    setNombre(soloLetras);
+    if (error) setError("");
+  }}
+  className="flex-1 w-full bg-transparent border border-[#0B1B30] rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-[#0B1B30] text-[#0B1B30] font-semibold" 
+/>
+</div>
           <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 flex-shrink-0 text-[#0B1B30] flex items-center justify-center">
