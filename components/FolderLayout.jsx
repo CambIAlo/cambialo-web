@@ -1,104 +1,118 @@
 "use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { TabActivaBeige, TabInactivaGris, TabHoverVerde, TabContactanosBlue, LogoCambialo } from "@/components/LayoutIcons";
 
 export default function FolderLayout({ children }) {
-  const pathname = usePathname() || '/';
+  const pathname = usePathname();
 
-  // 1. Identificar la ruta activa
-  let activeTab = 'inicio';
-  if (pathname.includes('/servicios')) activeTab = 'servicios';
-  else if (pathname.includes('/contacto')) activeTab = 'contacto';
+  const isInicio = pathname === "/" || pathname === "/inicio";
+  const isServicios = pathname.startsWith("/servicio");
+  const isContactanos = pathname.startsWith("/contacto");
 
-  // 2. Lógica de Colores Dinámicos (Extraídos de tus imágenes)
-  // El cuerpo siempre asume el color de la pestaña activa
-  const colorCuerpo = 
-    activeTab === 'inicio' ? '#FFF6E9' : 
-    activeTab === 'servicios' ? '#FFF6E9' : '#6DC5D4';
-
-  // Las pestañas asumen el color del cuerpo si están activas, o su color inactivo por defecto
-  const colorInicio = activeTab === 'inicio' ? colorCuerpo : '#C8BCB0'; 
-  const colorServicios = activeTab === 'servicios' ? colorCuerpo : 'url(#paint2_linear)'; 
-  const colorContacto = activeTab === 'contacto' ? colorCuerpo : 'url(#paint1_linear)'; 
+  // El fondo se vuelve azul cuando isContactanos es true
+  const bgFolder = isContactanos ? "bg-[#5EBCD0]" : "bg-[#FFF6E9]";
 
   return (
-    <div className="min-h-screen w-full bg-[#0B1B30] flex flex-col p-2 sm:p-4 md:p-6 lg:p-8 font-sans">
+    <div className="w-full min-h-screen bg-[#0B1B30] flex flex-col items-center px-2 sm:px-6 md:px-10 lg:px-16 pt-8 md:pt-10 overflow-x-hidden">
       
-      {/* Contenedor centralizado que limita el crecimiento en pantallas ultra-anchas */}
-      <div className="w-full h-full flex flex-col flex-1 relative mx-auto max-w-[1440px] drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)]">
-
-        {/* ================= HEADER: PESTAÑAS ================= */}
-        {/* El aspect-ratio asegura que el contenedor no colapse antes de que cargue el SVG */}
-        <div className="relative w-full z-10 flex-shrink-0" style={{ aspectRatio: '1440/155' }}>
+      {/* ================= BARRA DE NAVEGACIÓN ================= */}
+      <div className="w-full max-w-[1400px] flex justify-between items-end relative z-10 -mb-1">
+        
+        {/* GRUPO IZQUIERDO: Inicio + Servicios */}
+        <div className="flex items-end relative">
           
-          <svg 
-            viewBox="0 0 1440 155" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-full absolute inset-0"
-            preserveAspectRatio="xMidYMax meet"
-          >
-            {/* Trazados con transición fluida de colores */}
-            <path d="M1400 110C1400 93.4315 1386.57 80 1370 80H1119.66C1110.57 80 1101.97 84.1209 1096.28 91.2054L1045 155H1400V110Z" fill={colorContacto} className="transition-colors duration-300" />
-            <path d="M40 110C40 93.4315 53.4315 80 70 80H320.341C329.43 80 338.029 84.1209 343.724 91.2054L395 155H40V110Z" fill={colorInicio} className="transition-colors duration-300" />
-            <path d="M395 91.5C395 74.9315 408.431 61.5 425 61.5L590 61.5C606.569 61.5 620 74.9315 620 91.5V155H395V91.5Z" fill={colorServicios} className="transition-colors duration-300" />
-
-            <defs>
-              <linearGradient id="paint1_linear" x1="1222.5" y1="118" x2="1222.5" y2="155" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#63C3D1"/>
-                <stop offset="1" stopColor="#119EB3"/>
-              </linearGradient>
-              <linearGradient id="paint2_linear" x1="507.5" y1="67" x2="507.5" y2="210" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#9CFFC2"/>
-                <stop offset="0.350962" stopColor="#36DB75"/>
-                <stop offset="1" stopColor="#03210F"/>
-              </linearGradient>
-            </defs>
-          </svg>
-
-          {/* Enlaces anclados porcentualmente. clamp() limita el tamaño mínimo y máximo de la fuente */}
+          {/* PESTAÑA INICIO */}
           <Link 
             href="/" 
-            style={{ fontSize: 'clamp(12px, 2vw, 24px)' }}
-            className={`absolute top-[72%] left-[15.1%] -translate-x-1/2 -translate-y-1/2 font-bold transition-transform hover:-translate-y-1 ${activeTab === 'inicio' ? 'text-[#0B1B30]' : 'text-gray-700'}`}
+            className={`group relative flex items-end cursor-pointer ${isInicio ? 'w-[100px] sm:w-[150px] md:w-[250px] lg:w-[355px] z-30' : 'w-[65px] sm:w-[95px] md:w-[158px] lg:w-[225px] z-10'}`}
           >
-            Inicio
+            {isInicio ? (
+              <TabActivaBeige className="w-full h-auto drop-shadow-md" />
+            ) : (
+              <>
+                <TabInactivaGris className="w-full h-auto drop-shadow-md transition-opacity duration-0 group-hover:opacity-0" />
+                <TabHoverVerde className="absolute bottom-0 left-0 w-full h-auto drop-shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-0" />
+              </>
+            )}
+            
+            {/* TEXTO INICIO: 40px en Activo/Hover, 24px en Inactivo */}
+            <span className={`absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap transition-all duration-300 font-['Noto_Sans_Georgian']
+              ${isInicio 
+                ? 'top-[45%] left-[39.4%] font-bold text-[14px] sm:text-[18px] md:text-[28px] lg:text-[40px] text-[#0B1B30]' 
+                : 'top-[50%] left-[37.7%] font-medium text-[10px] sm:text-[12px] md:text-[18px] lg:text-[24px] text-[#FFF6E9] group-hover:top-[42%] group-hover:font-bold group-hover:text-[14px] sm:group-hover:text-[18px] md:group-hover:text-[28px] lg:group-hover:text-[40px] group-hover:text-[#0B1B30]'}
+            `}>
+              Inicio
+            </span>
           </Link>
 
+          {/* PESTAÑA SERVICIOS */}
           <Link 
             href="/servicios" 
-            style={{ fontSize: 'clamp(12px, 2vw, 24px)' }}
-            className={`absolute top-[65%] left-[35.2%] -translate-x-1/2 -translate-y-1/2 font-bold transition-transform hover:-translate-y-1 ${activeTab === 'servicios' ? 'text-[#0B1B30]' : 'text-[#0B1B30]'}`}
+            className={`group relative flex items-end cursor-pointer -ml-[10px] sm:-ml-[20px] md:-ml-[30px] lg:-ml-[40px] ${isServicios ? 'w-[100px] sm:w-[150px] md:w-[250px] lg:w-[355px] z-30' : 'w-[65px] sm:w-[95px] md:w-[158px] lg:w-[225px] z-10'}`}
           >
-            Servicios
+            {isServicios ? (
+              <TabActivaBeige className="w-full h-auto drop-shadow-md" />
+            ) : (
+              <>
+                <TabInactivaGris className="w-full h-auto drop-shadow-md transition-opacity duration-0 group-hover:opacity-0" />
+                <TabHoverVerde className="absolute bottom-0 left-0 w-full h-auto drop-shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-0" />
+              </>
+            )}
+            
+            {/* TEXTO SERVICIOS: 40px en Activo/Hover, 24px en Inactivo */}
+            <span className={`absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap transition-all duration-300 font-['Noto_Sans_Georgian']
+              ${isServicios 
+                ? 'top-[45%] left-[39.4%] font-bold text-[14px] sm:text-[18px] md:text-[28px] lg:text-[40px] text-[#0B1B30]' 
+                : 'top-[50%] left-[37.7%] font-medium text-[10px] sm:text-[12px] md:text-[18px] lg:text-[24px] text-[#FFF6E9] group-hover:top-[42%] group-hover:font-bold group-hover:text-[14px] sm:group-hover:text-[18px] md:group-hover:text-[28px] lg:group-hover:text-[40px] group-hover:text-[#0B1B30]'}
+            `}>
+              Servicios
+            </span>
           </Link>
 
-          <Link 
-            href="/contacto" 
-            style={{ fontSize: 'clamp(12px, 2vw, 24px)' }}
-            className={`absolute top-[72%] left-[84.9%] -translate-x-1/2 -translate-y-1/2 font-bold transition-transform hover:-translate-y-1 ${activeTab === 'contacto' ? 'text-[#0B1B30]' : 'text-white'}`}
-          >
-            Contáctanos
-          </Link>
         </div>
 
-        {/* ================= CUERPO DE LA CARPETA ================= */}
-        <main 
-          className="mx-auto flex flex-col flex-1 w-full rounded-b-[20px] md:rounded-b-[32px] transition-colors duration-300 z-0 relative"
-          style={{ 
-            width: '94.44%', // Anclaje estructural necesario por el diseño del SVG
-            backgroundColor: colorCuerpo,
-            marginTop: '-1px' // Elimina la línea blanca de renderizado entre SVG y Div
-          }}
-        >
-          {/* El overflow se maneja en un contenedor interno para no romper la sombra del padre */}
-          <div className="w-full h-full overflow-y-auto overflow-x-hidden rounded-b-[20px] md:rounded-b-[32px]">
-            {children}
+        {/* GRUPO DERECHO: Logo + Contáctanos */}
+        <div className="flex items-end relative gap-x-1 sm:gap-x-4 md:gap-x-10 lg:gap-x-16">
+          
+          {/* LOGO */}
+          <div className="w-[35px] sm:w-[50px] md:w-[100px] lg:w-[140px] pointer-events-none mb-1 md:mb-2">
+            <LogoCambialo className="w-full h-auto drop-shadow-md" />
           </div>
-        </main>
+          
+          {/* PESTAÑA CONTÁCTANOS */}
+          <Link 
+            href="/contacto" 
+            className={`group relative flex items-end cursor-pointer w-[85px] sm:w-[130px] md:w-[220px] lg:w-[355px] transition-all ${isContactanos ? 'z-30' : 'z-10'}`}
+          >
+            {isContactanos ? (
+               <TabContactanosBlue className="w-full h-auto drop-shadow-md" />
+            ) : (
+               <>
+                 <TabContactanosBlue className="w-full h-auto drop-shadow-md" />
+               </>
+            )}
+            
+            {/* TEXTO CONTÁCTANOS: 40px en Activo/Hover, 24px en Inactivo */}
+            <span className={`absolute left-[60%] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap transition-all duration-300 font-['Noto_Sans_Georgian']
+              ${isContactanos 
+                ? 'top-[45%] font-bold text-[12px] sm:text-[16px] md:text-[28px] lg:text-[40px] text-[#0B1B30]' 
+                : 'top-[50%] font-medium text-[10px] sm:text-[12px] md:text-[18px] lg:text-[24px] text-[#FFF6E9] group-hover:top-[42%] group-hover:font-bold group-hover:text-[12px] sm:group-hover:text-[16px] md:group-hover:text-[28px] lg:group-hover:text-[40px] group-hover:text-[#0B1B30]'}
+            `}>
+              Contáctanos
+            </span>
+          </Link>
+
+        </div>
 
       </div>
+
+      {/* ================= CUERPO DE LA CARPETA ================= */}
+      <div className={`relative z-20 w-full max-w-[1400px] min-h-[75vh] rounded-b-[20px] sm:rounded-b-[30px] md:rounded-b-[40px] shadow-[0_15px_40px_rgba(0,0,0,0.5)] transition-colors duration-500 ${bgFolder}`}>
+        {children}
+      </div>
+
     </div>
   );
 }
