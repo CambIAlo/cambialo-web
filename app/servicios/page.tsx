@@ -97,13 +97,18 @@ export default function ServiciosPage() {
                     </div>
                     
                     <ul className="space-y-6 md:space-y-8 font-['Instrument_Serif'] font-normal not-italic text-xl md:text-2xl lg:text-[28px] text-[#0B1B30] leading-tight">
-                      {contenidoActual.caracteristicas.map((caracteristica, index) => (
-                        <li key={index} className="flex items-start gap-4">
-                          <AsteriscoSVG /> 
-                          <span className="mt-1 md:mt-2">{caracteristica}</span>
-                        </li>
-                      ))}
-                    </ul>
+  {contenidoActual.caracteristicas.map((caracteristica, index) => (
+    <li key={index} className="flex items-start gap-3 md:gap-4">
+      
+      {/* Contenedor restrictivo para el asterisco */}
+      <div className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 flex-shrink-0 mt-0.5 md:mt-1">
+        <AsteriscoSVG /> 
+      </div>
+      
+      <span className="mt-1 md:mt-2">{caracteristica}</span>
+    </li>
+  ))}
+</ul>
                   </div>
                 )}
               </div>
