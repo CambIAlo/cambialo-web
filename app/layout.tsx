@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CámbiAlo | Agencia Creativa",
+  title: "CámbIAlo | Agencia Creativa",
   description: "Hacemos realidad tus proyectos.",
 };
 
