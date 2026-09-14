@@ -49,10 +49,10 @@ export default function ContactoPage() {
               </div>
 
               <div className="flex items-center gap-6 ml-4">
-                <a href="https://instagram.com/tu_usuario" target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:scale-110 transition-transform">
+                <a href="https://www.instagram.com/somos.cambialo/" target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:scale-110 transition-transform">
                   <Image src="/svg/instagram.svg" alt="Instagram" width={54} height={55} />
                 </a>
-                <a href="https://behance.net/tu_usuario" target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:scale-110 transition-transform">
+                <a href="https://www.behance.net/idgonza" target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:scale-110 transition-transform">
                   <Image src="/svg/behance.svg" alt="Behance" width={72} height={45} />
                 </a>
               </div>
