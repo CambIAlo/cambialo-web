@@ -1,7 +1,12 @@
 import React from "react";
 
 export const AsteriscoSVG = () => (
-  <svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 w-8 h-8 md:w-10 md:h-10 mt-0.5">
+  <svg 
+    viewBox="0 0 49 49" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg" 
+    className="w-full h-full"
+  >
     <path d="M30.1152 1V13.6748L36.3252 4.75488L37.0078 3.77441L37.8525 4.61914L44.3809 11.1465L45.0879 11.8535L44.3809 12.5605L38.0576 18.8848H48V30.1152H38.0576L45.0879 37.1455L37.0078 45.2256L36.3252 44.2451L30.1152 35.3242V48H18.8848V35.3242L12.6738 44.2451L11.9912 45.2256L11.1465 44.3809L4.61914 37.8525L3.91211 37.1455L10.9424 30.1152H1V18.8848H10.9424L4.61914 12.5605L3.91211 11.8535L11.9912 3.77441L12.6738 4.75488L18.8848 13.6748V1H30.1152Z" fill="#FFF6E9" stroke="#0B1B30" strokeWidth="2"/>
   </svg>
 );

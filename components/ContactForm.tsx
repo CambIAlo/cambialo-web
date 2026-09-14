@@ -2,14 +2,12 @@
 
 import React from "react";
 import Image from "next/image";
-
-// 1. Agregamos onSiguiente a la interfaz de las propiedades
+import { AsteriscoSVG } from "./icons";
 interface ContactFormProps {
   onVolver: () => void;
   onSiguiente: () => void; 
 }
 
-// 2. Extraemos onSiguiente de las props del componente
 export default function ContactForm({ onVolver, onSiguiente }: ContactFormProps) {
   return (
     <div className="w-full max-w-[700px] mx-auto animate-fade-in">
@@ -19,30 +17,46 @@ export default function ContactForm({ onVolver, onSiguiente }: ContactFormProps)
         <div className="bg-[#FFF6E9] p-6 md:p-8 flex flex-col gap-6 md:gap-4">
           <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
             <div className="flex items-center gap-2">
-              <span className="text-xl md:text-2xl text-[#0B1B30]">✱</span>
+              {/* Contenedor para controlar el tamaño del SVG */}
+              <div className="w-6 h-6 flex-shrink-0 text-[#0B1B30] flex items-center justify-center">
+                <AsteriscoSVG />
+              </div>
               <label className="text-[#0B1B30] font-bold md:w-40">Nombre y apellido</label>
             </div>
-            <input type="text" className="flex-1 w-full bg-transparent border border-[#0B1B30] rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-[#0B1B30]" />
+            {/* Se agregó text-[#0B1B30] y font-medium para máxima legibilidad */}
+            <input 
+              type="text" 
+              className="flex-1 w-full bg-transparent border border-[#0B1B30] rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-[#0B1B30] text-[#0B1B30] font-medium" 
+            />
           </div>
 
           <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
             <div className="flex items-center gap-2">
-              <span className="text-xl md:text-2xl text-[#0B1B30]">✱</span>
+              <div className="w-5 h-5 flex-shrink-0 text-[#0B1B30]">
+                <AsteriscoSVG />
+              </div>
               <label className="text-[#0B1B30] font-bold md:w-40">Email</label>
             </div>
-            <input type="email" className="flex-1 w-full bg-transparent border border-[#0B1B30] rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-[#0B1B30]" />
+            {/* Se agregó text-[#0B1B30] y font-medium */}
+            <input 
+              type="email" 
+              className="flex-1 w-full bg-transparent border border-[#0B1B30] rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-[#0B1B30] text-[#0B1B30] font-medium" 
+            />
           </div>
         </div>
 
         {/* Parte Inferior Azul Oscuro */}
         <div className="bg-[#0B1B30] p-6 md:p-8 flex flex-col gap-2">
           <div className="flex items-center gap-2 text-white">
-            <span className="text-xl md:text-2xl">✱</span>
+            <div className="w-5 h-5 flex-shrink-0 text-white">
+              <AsteriscoSVG />
+            </div>
             <label className="font-bold">Mensaje</label>
           </div>
+          {/* El textarea ya tenía text-white, se agregó font-medium para mantener consistencia */}
           <textarea 
             rows={4} 
-            className="w-full bg-transparent border border-white rounded-md p-3 text-white outline-none focus:ring-2 focus:ring-white resize-none mt-2"
+            className="w-full bg-transparent border border-white rounded-md p-3 outline-none focus:ring-2 focus:ring-white resize-none mt-2 text-white font-medium"
           ></textarea>
         </div>
 
@@ -67,7 +81,6 @@ export default function ContactForm({ onVolver, onSiguiente }: ContactFormProps)
           <Image src="/svg/behance.svg" alt="Behance" width={40} height={40} />
         </div>
 
-        {/* 3. Le pasamos la función al evento onClick del botón Siguiente */}
         <button 
           onClick={onSiguiente} 
           className="
