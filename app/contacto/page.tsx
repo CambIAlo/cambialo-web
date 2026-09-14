@@ -44,8 +44,8 @@ export default function ContactoPage() {
 
             <div className="flex flex-col items-center md:items-start md:ml-12 mt-12 md:mt-24 relative z-10">
               
-              {/* 1. Botón Trabajemos Juntos */}
-              <button onClick={() => setPaso(2)} className="w-full max-w-[516px] h-[103px] mb-6 hover:scale-105 transition-transform">
+              {/* 1. Botón Trabajemos Juntos (Agregado cursor-pointer) */}
+              <button onClick={() => setPaso(2)} className="cursor-pointer w-full max-w-[516px] h-[103px] mb-6 hover:scale-105 transition-transform">
                 <Image src="/svg/trabajemosjuntos.svg" alt="Trabajemos Juntos" width={516} height={103} />
               </button>
               
@@ -54,10 +54,14 @@ export default function ContactoPage() {
                  <Image src="/svg/envianosunmensaje.svg" alt="Envíanos un mensaje" width={510} height={88} />
               </div>
 
-              {/* 3. ¡AQUÍ VAN LAS REDES SOCIALES QUE FALTABAN! */}
+              {/* 3. Redes Sociales (Envueltas en <a> con cursor-pointer y hover) */}
               <div className="flex items-center gap-6 ml-4">
-                <Image src="/svg/instagram.svg" alt="Instagram" width={54} height={55} />
-                <Image src="/svg/behance.svg" alt="Behance" width={72} height={45} />
+                <a href="https://instagram.com/tu_usuario" target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:scale-110 transition-transform">
+                  <Image src="/svg/instagram.svg" alt="Instagram" width={54} height={55} />
+                </a>
+                <a href="https://behance.net/tu_usuario" target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:scale-110 transition-transform">
+                  <Image src="/svg/behance.svg" alt="Behance" width={72} height={45} />
+                </a>
               </div>
 
             </div>
