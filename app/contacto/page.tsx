@@ -1,8 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import Image from "next/image"; 
+import Image from "next/image";
+
+import ContactForm from "../../components/ContactForm";
+import CalendarView from "../../components/CalendarView"; 
 
 const SkeletonLottie = dynamic(() => import("../../components/SkeletonLottie"), {
   ssr: false,
@@ -10,111 +13,73 @@ const SkeletonLottie = dynamic(() => import("../../components/SkeletonLottie"), 
 });
 
 export default function ContactoPage() {
+  // 1 = Esqueleto, 2 = Formulario, 3 = Calendario, 4 = Éxito...
+  const [paso, setPaso] = useState(1);
+
+  // Estado temporal para guardar los datos antes de tener backend
+  const [datosFormulario, setDatosFormulario] = useState({ nombre: "", email: "", mensaje: "" });
+  const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
+
   return (
-    // Contenedor general centrado
     <div className="pt-16 pb-24 text-center relative z-10 flex flex-col items-center">
       
-      {/* 
-        Texto Superior 
-        Ancho: 804px, Alto: 90px
-      */}
+      {/* El título cambia dependiendo del paso en el que estemos */}
       <div className="relative mb-8 w-full max-w-[804px] h-[90px] mx-auto flex items-center justify-center">
-        <Image 
-          src="/svg/proyectoenmente.svg" 
-          alt="¿Tienes algún proyecto en mente?"
-          width={804}
-          height={90}
-          className="w-full h-auto"
-          priority 
-        />
+        {paso === 1 || paso === 2 ? (
+          <Image src="/svg/proyectoenmente.svg" alt="¿Tienes algún proyecto en mente?" width={804} height={90} priority />
+        ) : (
+          <Image src="/svg/reservarunacita.svg" alt="Reserva una cita" width={804} height={90} priority />
+        )}
       </div>
 
-      {/* 
-        Contenedor Principal de la Interfaz (W: 876px)
-        Mantenemos una estructura flex para que sea responsivo
-      */}
-      <div className="w-full max-w-[876px] mx-auto flex flex-col md:flex-row items-center md:items-start justify-center relative">
+      <div className="w-full max-w-[876px] mx-auto relative">
         
-        {/* 
-          1. Esqueleto (Lottie)
-          Dimensiones exactas: w-[343px] h-[515px]
-        */}
-        <div className="w-[343px] h-[515px] flex-shrink-0 relative z-20">
-          <SkeletonLottie />
-        </div>
+       {/* ENRUTADOR INTERNO */}
+        {paso === 1 && (
+          <div className="flex flex-col md:flex-row items-center md:items-start justify-center animate-fade-in">
+            
+            <div className="w-[343px] h-[515px] flex-shrink-0 relative z-20">
+              <SkeletonLottie />
+            </div>
 
-        {/* 
-          2. Bloque Derecho (Botón, Textos y Redes)
-          Agregamos un margen izquierdo (ml) en escritorio para simular la distancia X
-        */}
-        <div className="flex flex-col items-center md:items-start md:ml-12 mt-12 md:mt-24 relative z-10">
-          
-          {/* Botón SVG - W: 516px, H: 103px */}
-          <div className="w-full max-w-[516px] h-[103px] mb-6">
-            <Image 
-              src="/svg/trabajemosjuntos.svg" // <-- REEMPLAZA CON LA RUTA DE TU SVG EXPORTADO
-              alt="Botón Trabajemos Juntos"
-              width={516}
-              height={103}
-              className="w-full h-auto"
-            />
+            <div className="flex flex-col items-center md:items-start md:ml-12 mt-12 md:mt-24 relative z-10">
+              
+              {/* 1. Botón Trabajemos Juntos */}
+              <button onClick={() => setPaso(2)} className="w-full max-w-[516px] h-[103px] mb-6 hover:scale-105 transition-transform">
+                <Image src="/svg/trabajemosjuntos.svg" alt="Trabajemos Juntos" width={516} height={103} />
+              </button>
+              
+              {/* 2. Texto Envíanos un mensaje */}
+              <div className="w-full max-w-[510px] h-[88px] mb-12">
+                 <Image src="/svg/envianosunmensaje.svg" alt="Envíanos un mensaje" width={510} height={88} />
+              </div>
+
+              {/* 3. ¡AQUÍ VAN LAS REDES SOCIALES QUE FALTABAN! */}
+              <div className="flex items-center gap-6 ml-4">
+                <Image src="/svg/instagram.svg" alt="Instagram" width={54} height={55} />
+                <Image src="/svg/behance.svg" alt="Behance" width={72} height={45} />
+              </div>
+
+            </div>
           </div>
+        )}
 
-          {/* Texto Inferior SVG - W: 510px, H: 88px */}
-          <div className="w-full max-w-[510px] h-[88px] mb-12">
-             <Image 
-              src="/svg/envianosunmensaje.svg" // <-- REEMPLAZA CON LA RUTA DE TU SVG EXPORTADO
-              alt="Envíanos un mensaje"
-              width={510}
-              height={88}
-              className="w-full h-auto"
-            />
-          </div>
+        {paso === 2 && (
+          <ContactForm 
+            onVolver={() => setPaso(1)} 
+            onSiguiente={() => setPaso(3)} 
+            // Aquí luego pasarás los datos y funciones para manejarlos
+          />
+        )}
 
-          {/* Redes Sociales - Alineadas horizontalmente */}
-          <div className="flex items-center gap-6 ml-4">
-            {/* Instagram - W: 54px, H: 55px */}
-            <Image 
-              src="/ruta/a/tu/instagram.svg" // <-- REEMPLAZA
-              alt="Instagram"
-              width={54}
-              height={55}
-            />
-            {/* Behance - W: 72px, H: 45px */}
-            <Image 
-              src="/ruta/a/tu/behance.svg" // <-- REEMPLAZA
-              alt="Behance"
-              width={72}
-              height={45}
-            />
-          </div>
+        {paso === 3 && (
+          <CalendarView 
+            onVolver={() => setPaso(2)}
+            onListo={() => setPaso(4)} // O enviar al backend
+          />
+        )}
 
-        </div>
       </div>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
