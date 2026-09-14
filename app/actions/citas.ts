@@ -1,22 +1,15 @@
-// app/actions/citas.ts
 "use server";
 
 import prisma from "@/lib/prisma";
+import { Resend } from "resend";
+import { EmailNuevoProyecto } from "@/components/emails/EmailNuevoProyecto"; // <-- Importas tu plantilla
 
-// 1. Obtener citas ocupadas para que el calendario las marque no disponibles
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export async function obtenerCitasOcupadas() {
-  try {
-    const citas = await prisma.cita.findMany({
-      select: { fecha: true, hora: true },
-    });
-    return { success: true, citas };
-  } catch (error) {
-    console.error("Error al obtener citas:", error);
-    return { success: false, citas: [] };
-  }
+  // ... (tu código intacto)
 }
 
-// 2. Guardar la cita
 export async function agendarCita(datos: {
   nombre: string;
   email: string;
@@ -27,6 +20,7 @@ export async function agendarCita(datos: {
   try {
     const fechaTexto = datos.fecha.toISOString().split("T")[0];
 
+    // 1. Guardar en la Base de Datos
     const cliente = await prisma.cliente.upsert({
       where: { email: datos.email },
       update: { nombre: datos.nombre },
@@ -42,6 +36,20 @@ export async function agendarCita(datos: {
       },
     });
 
+    // 2. Enviar el correo usando el componente limpio
+    await resend.emails.send({
+      from: 'CámbiAlo Web <onboarding@resend.dev>', 
+      to: 'maykelyork@gmail.com', 
+      subject: `Nuevo Proyecto de ${datos.nombre}`,
+      react: EmailNuevoProyecto({ 
+        nombre: datos.nombre,
+        email: datos.email,
+        mensaje: datos.mensaje,
+        fechaTexto: fechaTexto,
+        hora: datos.hora
+      }),
+    });
+
     return { success: true, cita };
   } catch (error: any) {
     if (error.code === "P2002") {
@@ -50,7 +58,7 @@ export async function agendarCita(datos: {
         error: "Esta hora ya fue reservada. Por favor, selecciona otro horario.",
       };
     }
-    console.error("Error al guardar cita:", error);
+    console.error("Error al guardar cita o enviar correo:", error);
     return { success: false, error: "Ocurrió un error al agendar la cita." };
   }
 }

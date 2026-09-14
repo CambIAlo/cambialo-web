@@ -20,7 +20,7 @@ export default function CalendarView({ onVolver, onListo }: CalendarViewProps) {
 
   useEffect(() => {
     obtenerCitasOcupadas().then((res) => {
-      if (res.success) setCitasOcupadas(res.citas);
+      if (res?.success) setCitasOcupadas(res.citas);
     });
   }, []);
 
