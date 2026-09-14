@@ -64,14 +64,14 @@ export default function CalendarView({ onVolver, onListo }: CalendarViewProps) {
       <div className="flex items-center justify-between mt-12 w-full px-4">
         <button 
           onClick={onVolver}
-          className="bg-[#2A78A0] hover:bg-[#1E528E] text-white font-bold text-xl px-8 py-3 rounded-full border-[3px] border-[#0B1B30] transition-colors shadow-[4px_4px_0_0_rgba(11,27,48,1)] hover:translate-y-1 hover:shadow-none"
+          className="cursor-pointer bg-[#2A78A0] hover:bg-[#1E528E] text-white font-bold text-xl px-8 py-3 rounded-full border-[3px] border-[#0B1B30] transition-colors shadow-[4px_4px_0_0_rgba(11,27,48,1)] hover:translate-y-1 hover:shadow-none"
         >
           Volver
         </button>
 
         <button 
           onClick={onListo}
-          className="bg-[#36DB75] hover:bg-[#28B25C] text-[#0B1B30] font-bold text-xl px-8 py-3 rounded-full border-[3px] border-[#0B1B30] transition-colors shadow-[4px_4px_0_0_rgba(11,27,48,1)] hover:translate-y-1 hover:shadow-none"
+          className="cursor-pointer bg-[#36DB75] hover:bg-[#28B25C] text-[#0B1B30] font-bold text-xl px-8 py-3 rounded-full border-[3px] border-[#0B1B30] transition-colors shadow-[4px_4px_0_0_rgba(11,27,48,1)] hover:translate-y-1 hover:shadow-none"
         >
           Listo
         </button>

@@ -54,7 +54,7 @@ export default function ContactForm({ onVolver, onSiguiente }: ContactFormProps)
         <button 
           onClick={onVolver}
           className="
-            group relative bg-[#FFF6E9] hover:bg-[#2563EB] text-[#0B1B30] hover:text-white font-bold text-xl px-8 py-3 rounded-full 
+            cursor-pointer group relative bg-[#FFF6E9] hover:bg-[#2563EB] text-[#0B1B30] hover:text-white font-bold text-xl px-8 py-3 rounded-full 
             border-[3px] border-[#0B1B30] transition-colors duration-200 shadow-[4px_4px_0_0_rgba(11,27,48,1)] 
             hover:shadow-[2px_2px_0_0_rgba(11,27,48,1)] hover:translate-x-[2px] hover:translate-y-[2px] w-full md:w-auto
           "
@@ -71,7 +71,7 @@ export default function ContactForm({ onVolver, onSiguiente }: ContactFormProps)
         <button 
           onClick={onSiguiente} 
           className="
-            group relative bg-[#FFF6E9] hover:bg-[#2563EB] text-[#0B1B30] hover:text-white font-bold text-xl px-8 py-3 rounded-full 
+            cursor-pointer group relative bg-[#FFF6E9] hover:bg-[#2563EB] text-[#0B1B30] hover:text-white font-bold text-xl px-8 py-3 rounded-full 
             border-[3px] border-[#0B1B30] transition-colors duration-200 shadow-[4px_4px_0_0_rgba(11,27,48,1)] 
             hover:shadow-[2px_2px_0_0_rgba(11,27,48,1)] hover:translate-x-[2px] hover:translate-y-[2px] w-full md:w-auto
           "
