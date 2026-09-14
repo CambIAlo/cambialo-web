@@ -19,7 +19,7 @@ export default function CalendarView({ onVolver, onListo }: CalendarViewProps) {
   const [citasOcupadas, setCitasOcupadas] = useState<{ fecha: string; hora: string }[]>([]);
 
   useEffect(() => {
-    obtenerCitasOcupadas().then((res) => {
+    obtenerCitasOcupadas().then((res: any) => {
       if (res?.success) setCitasOcupadas(res.citas);
     });
   }, []);

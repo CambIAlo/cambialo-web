@@ -47,7 +47,7 @@ export async function agendarCita(datos: {
         mensaje: datos.mensaje,
         fechaTexto: fechaTexto,
         hora: datos.hora
-      }),
+      })as any,
     });
 
     return { success: true, cita };
