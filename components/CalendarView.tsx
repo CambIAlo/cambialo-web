@@ -53,9 +53,19 @@ export default function CalendarView({ onVolver, onListo }: CalendarViewProps) {
     
     // Si todas las horas del día están tomadas
     const horasOcupadasHoy = citasOcupadas.filter((c) => c.fecha === fechaISO);
-    const diaCompleto = horasOcupadasHoy.length >= horariosDisponibles.length;
+    
+    // Validación extra: Si es hoy, también descontamos las horas que ya pasaron
+    let horasDisponiblesReales = horariosDisponibles.length;
+    if (fechaIteracion.getTime() === hoy.getTime()) {
+      const horaActual = new Date().getHours();
+      const horasPasadas = horariosDisponibles.filter(h => Number(h.split(":")[0]) <= horaActual).length;
+      horasDisponiblesReales -= horasPasadas;
+    }
 
-    const estaDeshabilitado = esPasado || esMuyLejos || diaCompleto;
+    const diaCompleto = horasOcupadasHoy.length >= horasDisponiblesReales && horasDisponiblesReales > 0;
+    const diaSinHoras = horasDisponiblesReales <= 0 && fechaIteracion.getTime() === hoy.getTime();
+
+    const estaDeshabilitado = esPasado || esMuyLejos || diaCompleto || diaSinHoras;
     const esSeleccionado = fechaSeleccionada?.getTime() === fechaIteracion.getTime();
 
     diasGrid.push(
@@ -118,33 +128,53 @@ export default function CalendarView({ onVolver, onListo }: CalendarViewProps) {
           {diasGrid}
         </div>
 
-        {/* Horarios con validación de ocupados */}
+        {/* Horarios con validación de ocupados y horas pasadas */}
         {fechaSeleccionada && (
           <div className="border-t-[3px] border-[#0B1B30] p-4 bg-white">
             <h3 className="text-[#0B1B30] font-bold text-center mb-4">Horarios disponibles</h3>
             <div className="flex flex-wrap justify-center gap-3">
               {horariosDisponibles.map((hora) => {
-                const estaOcupada = citasOcupadas.some(
+                // 1. Verificamos si la fecha seleccionada es exactamente HOY
+                const esHoy = 
+                  fechaSeleccionada.getDate() === hoy.getDate() &&
+                  fechaSeleccionada.getMonth() === hoy.getMonth() &&
+                  fechaSeleccionada.getFullYear() === hoy.getFullYear();
+
+                let horaYaPaso = false;
+                if (esHoy) {
+                  const horaActual = new Date().getHours();
+                  // Extraemos la hora numérica del botón (ej. "14:00" -> 14)
+                  const [horaTurno] = hora.split(":").map(Number);
+                  
+                  if (horaTurno <= horaActual) {
+                    horaYaPaso = true;
+                  }
+                }
+
+                // 2. Comprobamos si está ocupada en la base de datos
+                const estaOcupadaEnDB = citasOcupadas.some(
                   (c) => c.fecha === fechaSeleccionadaTexto && c.hora === hora
                 );
+
+                const estaBloqueada = estaOcupadaEnDB || horaYaPaso;
 
                 return (
                   <button
                     key={hora}
                     type="button"
-                    disabled={estaOcupada}
+                    disabled={estaBloqueada}
                     onClick={() => setHoraSeleccionada(hora)}
                     className={`px-4 py-2 rounded-full font-bold border-2 transition-all
                       ${
-                        estaOcupada
-                          ? "bg-red-100 border-red-400 text-red-500 cursor-not-allowed line-through"
+                        estaBloqueada
+                          ? "bg-gray-200 border-gray-400 text-gray-500 cursor-not-allowed line-through opacity-70"
                           : horaSeleccionada === hora
                           ? "bg-[#36DB75] border-[#0B1B30] text-[#0B1B30]"
                           : "bg-transparent border-gray-300 text-gray-700 hover:border-[#0B1B30]"
                       }
                     `}
                   >
-                    {hora} {estaOcupada && "(Ocupado)"}
+                    {hora} {estaOcupadaEnDB ? "(Ocupado)" : horaYaPaso ? "(No disponible)" : ""}
                   </button>
                 );
               })}
